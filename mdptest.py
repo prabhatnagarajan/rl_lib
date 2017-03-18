@@ -1,10 +1,12 @@
 from mdp import *
+from QLearner import *
 import numpy as np
 
 def run_tests():
 	test_policy_iteration_aima_mdp()
 	test_value_iteration_aima_mdp()
 	test_q_value_iteration_aima_mdp()
+	test_q_learner()
 
 def test_policy_iteration_aima_mdp():
 	mdp = get_aima_mdp()
@@ -38,8 +40,8 @@ def test_q_learner():
 	test_q_value_iteration_aima_mdp()
 	mdp = get_aima_mdp()
 	Q_opt =  mdp.q_value_iteration()
-	agent = QLearner(mdp, 0.15)
-	learned_Q = agent.learn(self, 5000, epsilon=0.15, anneal_rate=0.0001)
+	agent = QLearner(mdp, 0.06)
+	learned_Q = agent.learn(350000, epsilon=0.3, anneal_rate=0.0000001)
 	print Q_opt
 	print learned_Q
 	np.testing.assert_array_almost_equal(Q_opt, learned_Q, decimal=2)	

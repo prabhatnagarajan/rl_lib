@@ -20,12 +20,14 @@ class QLearner:
 			#Complete an episode
 			while not (state == self.mdp.terminal):
 				if np.random.uniform() < epsilon:
-					action = np.random.choice(self.mdp.states)
+					action = np.random.choice(self.mdp.actions)
 				else:
-					action = np.argmax(Q, axis=1)
+					action = np.argmax(Q[state])
 				reward, next_state = self.mdp.act(state, action)
-				Q[state, action] = Q[state, action] + alpha(reward + mdp.gamma * np.amax(Q[next_state,:]) - Q(s, a))
+				Q[state, action] = Q[state, action] + alpha * (reward + self.mdp.gamma * np.amax(Q[next_state,:]) - Q[state, action])
+				if np.isnan(Q[state, action]):
+					set_trace()
 				state = next_state
-				alpha = alpha - anneal_rate
+				alpha = max(alpha - anneal_rate, 0)
 		return Q
 
