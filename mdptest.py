@@ -18,17 +18,22 @@ pg. 646, Figure 17.1
 '''
 
 def get_aima_mdp():
-	transitions = np.zeros((12, 4, 12))
+	transitions = np.zeros((14, 4, 14))
 	#Actions: up, down, left, right
-	rewards = np.full(12, -0.04)
-	rewards[3] = 1.0
-	rewards[6] = -1.0
+	rewards = np.full(14, -0.04)
+	#rewards[3] = 1.0
+	#rewards[6] = -1.0
+	rewards[11] = 1.0
+	rewards[12] = -1.0
 	#terminal state
-	rewards[11] = 0.0
+	#rewards[11] = 0.0
+	rewards[13] = 0
 	#Terminal States
 	transitions[3,:,11] = 1.0
-	transitions[6,:,11] = 1.0
-	transitions[11,:,11] = 1.0
+	transitions[6,:,12] = 1.0
+	transitions[11,:,13] = 1.0
+	transitions[12,:,13] = 1.0
+	transitions[13,:,13] = 1.0
 
 	#Action - up
 	transitions[0, 0, 0] = 0.9
