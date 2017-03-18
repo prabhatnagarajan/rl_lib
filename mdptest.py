@@ -191,7 +191,7 @@ def get_aima_mdp():
 	transitions[10, 3, 10] = 0.9
 	transitions[10, 3, 6] = 0.1
 
-	return MDP(transitions, rewards, 1.0)
+	return MDP(transitions, rewards, 1.0, terminal=13)
 
 if __name__ == '__main__':
 	run_tests()
