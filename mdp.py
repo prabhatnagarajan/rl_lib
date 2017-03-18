@@ -93,8 +93,10 @@ class MDP:
 				break
 		return V
 
-	def q_evaluation(self, policy):
-		print "Evaluating Q"
+	def policy_q_evaluation(self, policy):
 		V = self.policy_evaluation(policy)
 		Q = np.zeros(np.shape(self.transitions)[0:2])
+		for state in self.states:
+			for action in self.actions:
+				Q[state,action] = np.dot(self.transitions[state, action, :], self.rewards + self.gamma * V)
 		return Q
