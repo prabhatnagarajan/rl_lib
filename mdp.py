@@ -2,7 +2,7 @@
 import numpy as np
 from pdb import set_trace
 class MDP:
-	def __init__(self, transitions, rewards, gamma, min_value=-1000):
+	def __init__(self, transitions, rewards, gamma, start=None, min_value=-1000):
 		self.transitions = transitions
 		num_actions = np.shape(transitions)[1]
 		self.rewards = rewards
@@ -10,6 +10,7 @@ class MDP:
 		self.states = range(np.shape(self.transitions)[0])
 		self.actions = range(np.shape(self.transitions)[1])
 		self.min_value = min_value
+		self.start = start
 		self.check_valid_mdp()
 
 	def check_valid_mdp(self):
@@ -122,3 +123,11 @@ class MDP:
 			if delta  < theta:
 				break
 		return Q
+
+	'''
+	Takes a state and action, returns next state
+	Chooses a next state according to transition 
+	probabilities
+	'''
+	def act(self, state, action):
+		return np.random.choice(self.states, p=self.transitions[state, action, :])
