@@ -10,7 +10,7 @@ class QLearner:
 	'''
 	Follows an epsilon greedy policy with epsilon =0.1
 	'''
-	def learn(self, num_episodes, epsilon=0.15, anneal_rate=0.00001):
+	def learn(self, num_episodes, epsilon=0.15, anneal_rate=0.0001):
 		Q = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
 		alpha = self.alpha
 		for i in range(num_episodes):

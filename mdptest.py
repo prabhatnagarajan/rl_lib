@@ -32,6 +32,18 @@ def test_q_value_iteration_aima_mdp():
 		for action in mdp.actions:
 			#check the Bellman optimalityh equations are satisfied (pg. 76, S&B)
 			np.testing.assert_almost_equal(np.dot(mdp.transitions[state, action, :], mdp.rewards + mdp.gamma * np.amax(Q_opt, axis=1)), Q_opt[state, action], decimal=2)
+
+def test_q_learner():
+	#this test should fail if test_q_value_iteration_aima_mdp fails
+	test_q_value_iteration_aima_mdp()
+	mdp = get_aima_mdp()
+	Q_opt =  mdp.q_value_iteration()
+	agent = QLearner(mdp, 0.15)
+	learned_Q = agent.learn(self, 5000, epsilon=0.15, anneal_rate=0.0001)
+	print Q_opt
+	print learned_Q
+	np.testing.assert_array_almost_equal(Q_opt, learned_Q, decimal=2)	
+
 '''
 This MDP is taken from the AIMA book (Russell and Norvig),
 pg. 646, Figure 17.1 
