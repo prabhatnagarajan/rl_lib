@@ -3,6 +3,8 @@ import numpy as np
 
 def run_tests():
 	test_policy_iteration_aima_mdp()
+	test_value_iteration_aima_mdp()
+	test_q_value_iteration_aima_mdp()
 
 def test_policy_iteration_aima_mdp():
 	mdp = get_aima_mdp()
@@ -16,6 +18,20 @@ def test_policy_iteration_aima_mdp():
 	np.testing.assert_array_equal(correct_policy[4:6], policy[4:6])
 	np.testing.assert_array_equal(correct_policy[7:11], policy[7:11])
 
+def test_value_iteration_aima_mdp():
+	mdp = get_aima_mdp()
+	value = mdp.value_iteration()
+	correct_value = np.array([0.812, 0.868, 0.918, 1.0, 0.762, 0.660, -1.0, 0.705, 0.655, 0.611, 0.388, 0, 0, 0])
+	np.testing.assert_array_almost_equal(value, correct_value, decimal=2)
+
+
+def test_q_value_iteration_aima_mdp():
+	mdp = get_aima_mdp()
+	Q_opt =  mdp.q_value_iteration()
+	for state in mdp.states:
+		for action in mdp.actions:
+			#check the Bellman optimalityh equations are satisfied (pg. 76, S&B)
+			np.testing.assert_almost_equal(np.dot(mdp.transitions[state, action, :], mdp.rewards + mdp.gamma * np.amax(Q_opt, axis=1)), Q_opt[state, action], decimal=2)
 '''
 This MDP is taken from the AIMA book (Russell and Norvig),
 pg. 646, Figure 17.1 

@@ -50,7 +50,6 @@ class MDP:
 		while not policy_stable:
 			#policy evaluation
 			V = self.policy_evaluation(policy)
-			print count
 			count += 1
 			diff_count = 0
 			#policy improvement
@@ -62,8 +61,6 @@ class MDP:
 				if not old_action == policy[state]:
 					diff_count += 1
 					policy_stable = False
-		print "policy is"
-		print policy
 		return (policy, V)
 
 	def get_random_policy(self):
@@ -99,4 +96,29 @@ class MDP:
 		for state in self.states:
 			for action in self.actions:
 				Q[state,action] = np.dot(self.transitions[state, action, :], self.rewards + self.gamma * V)
+		return Q
+
+	def value_iteration(self, theta=0.0001):
+		V = np.zeros(len(self.states))
+		while True:
+			delta = 0
+			for state in self.states:
+				v = V[state]
+				V[state] = np.amax(np.dot(self.transitions[state, :, :], self.rewards + self.gamma * V))
+				delta = max(delta, np.abs(v - V[state]))
+			if delta < theta:
+				break
+		return V
+
+	def q_value_iteration(self, theta=0.0001):
+		Q = np.zeros((len(self.states), len(self.actions)))
+		while True:
+			delta = 0
+			for state in self.states:
+				for action in self.actions:
+					q = Q[state, action]
+					Q[state, action] = np.dot(self.transitions[state, action, :], self.rewards + self.gamma * np.amax(Q, axis=1))
+					delta = max(delta, np.abs(q- Q[state,action]))
+			if delta  < theta:
+				break
 		return Q
