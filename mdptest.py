@@ -6,10 +6,12 @@ from mdp import *
 import numpy as np
 
 def run_tests():
-	print "stuff"
+	test_policy_iteration_aima_mdp()
 
-def _test_value_iteration():
-	print "Stuff"
+def test_policy_iteration_aima_mdp():
+	mdp = get_aima_mdp()
+	value = mdp.policy_iteration()[1]
+	print value
 '''
 This MDP is taken from the AIMA book (Russell and Norvig),
 pg. 646, Figure 17.1 
@@ -40,19 +42,12 @@ def get_aima_mdp():
 	transitions[2, 0, 1] = 0.1
 	transitions[2, 0, 3] = 0.1
 
-	transitions[3, 0, 3] = 0.9
-	transitions[3, 0, 2] = 0.1
-
 	transitions[4, 0, 0] = 0.8
 	transitions[4, 0, 4] = 0.2
 
 	transitions[5, 0, 2] = 0.8
 	transitions[5, 0, 5] = 0.1
 	transitions[5, 0, 6] = 0.1
-
-	transitions[6, 0, 3] = 0.8
-	transitions[6, 0, 5] = 0.1
-	transitions[6, 0, 6] = 0.1
 
 	transitions[7, 0, 4] = 0.8
 	transitions[7, 0, 8] = 0.1
@@ -83,20 +78,12 @@ def get_aima_mdp():
 	transitions[2, 1, 1] = 0.1
 	transitions[2, 1, 3] = 0.1
 
-	transitions[3, 1, 6] = 0.8
-	transitions[3, 1, 2] = 0.1
-	transitions[3, 1, 3] = 0.1
-
 	transitions[4, 1, 7] = 0.8
 	transitions[4, 1, 4] = 0.2
 
 	transitions[5, 1, 9] = 0.8
 	transitions[5, 1, 5] = 0.1
 	transitions[5, 1, 6] = 0.1
-
-	transitions[6, 1, 10] = 0.8
-	transitions[6, 1, 5] = 0.1
-	transitions[6, 1, 6] = 0.1
 
 	transitions[7, 1, 7] = 0.9
 	transitions[7, 1, 8] = 0.1
@@ -123,10 +110,6 @@ def get_aima_mdp():
 	transitions[2, 2, 2] = 0.1
 	transitions[2, 2, 5] = 0.1
 
-	transitions[3, 2, 2] = 0.8
-	transitions[3, 2, 3] = 0.1
-	transitions[3, 2, 6] = 0.1
-
 	transitions[4, 2, 4] = 0.8
 	transitions[4, 2, 0] = 0.1
 	transitions[4, 2, 7] = 0.1
@@ -134,10 +117,6 @@ def get_aima_mdp():
 	transitions[5, 2, 5] = 0.8
 	transitions[5, 2, 2] = 0.1
 	transitions[5, 2, 9] = 0.1
-
-	transitions[6, 2, 5] = 0.8
-	transitions[6, 2, 3] = 0.1
-	transitions[6, 2, 10] = 0.1
 
 	transitions[7, 2, 7] = 0.9
 	transitions[7, 2, 4] = 0.1
@@ -165,9 +144,6 @@ def get_aima_mdp():
 	transitions[2, 3, 2] = 0.1
 	transitions[2, 3, 5] = 0.1
 
-	transitions[3, 3, 3] = 0.9
-	transitions[3, 3, 6] = 0.1
-
 	transitions[4, 3, 4] = 0.8
 	transitions[4, 3, 0] = 0.1
 	transitions[4, 3, 7] = 0.1
@@ -175,10 +151,6 @@ def get_aima_mdp():
 	transitions[5, 3, 6] = 0.8
 	transitions[5, 3, 2] = 0.1
 	transitions[5, 3, 9] = 0.1
-
-	transitions[6, 3, 6] = 0.8
-	transitions[6, 3, 3] = 0.1
-	transitions[6, 3, 10] = 0.1
 
 	transitions[7, 3, 8] = 0.8
 	transitions[7, 3, 7] = 0.1

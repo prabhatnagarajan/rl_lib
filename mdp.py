@@ -7,6 +7,8 @@ class MDP:
 		num_actions = np.shape(transitions)[1]
 		self.rewards = rewards
 		self.gamma = gamma
+		self.states = range(np.shape(self.transitions)[0])
+		self.actions = range(np.shape(self.transitions)[1])
 		self.check_valid_mdp()
 
 	def check_valid_mdp(self):
@@ -28,6 +30,10 @@ class MDP:
 					prob_sum += prob
 				if not (prob_sum == 1):
 					is_valid = False
+					print s
+					print a
+					print "Invaldi3"
+					print prob_sum
 		if self.gamma < 0 or self.gamma > 1:
 			is_valid = False
 		assert(is_valid)
@@ -40,21 +46,22 @@ class MDP:
 		print "Enter Policy Iteration"
 		#initialization
 		if policy is None:
-			policy = np.zeros(np.shape(self.transitions)[0],dtype=np.int8)
+			policy = self.get_random_policy()
 
 		policy_stable = False
 		count = 0
 		while not policy_stable:
 			#policy evaluation
+			print policy
 			V = self.policy_evaluation(policy)
 			print count
 			count += 1
 			diff_count = 0
 			#policy improvement
 			policy_stable = True
-			for state in range(np.shape(self.transitions)[0]):
+			for state in self.states:
 				old_action = policy[state]
-				action_vals = np.dot(self.transitions[state,:,:], self.rewards + 0.99 * V).tolist()
+				action_vals = np.dot(self.transitions[state,:,:], self.rewards +self.gamma * V).tolist()
 				policy[state] = action_vals.index(max(action_vals))
 				if not old_action == policy[state]:
 					diff_count += 1
@@ -65,6 +72,12 @@ class MDP:
 		print "returning"
 		return (policy, V)
 
+	def get_random_policy(self):
+		policy = np.zeros(len(self.states),dtype=np.int8)
+		for state in self.states:
+			policy[state] = np.random.randint(0, len(self.actions))
+		return policy
+
 	'''
 	policy - deterministic policy, maps state to action
 	-Deterministic policy evaluation
@@ -74,9 +87,10 @@ class MDP:
 		delta = 1
 		while delta > 0.01:
 			delta = 0
-			for state in range(len(V)):
+			for state in self.states:
 				value = V[state]
-				V[state] = np.dot(self.transitions[state,:,:], self.rewards + 0.99 * V)[policy[state]]
+				print policy[state]
+				V[state] = np.dot(self.transitions[state, policy[state],:], self.rewards + self.gamma * V)
 				delta = max(delta, abs(value - V[state]))
 		return V
 
