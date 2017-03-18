@@ -62,14 +62,12 @@ class MDP:
 				if not old_action == policy[state]:
 					diff_count += 1
 					policy_stable = False
-			print "Diff count is " + str(diff_count)
 		print "policy is"
 		print policy
-		print "returning"
 		return (policy, V)
 
 	def get_random_policy(self):
-		policy = np.zeros(len(self.states),dtype=np.int8)
+		policy = np.zeros(len(self.states),dtype=np.uint32)
 		for state in self.states:
 			policy[state] = np.random.randint(0, len(self.actions))
 		return policy

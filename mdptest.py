@@ -1,7 +1,3 @@
-'''
-Our MDP examples were taken from Sutton and Barto
-'''
-
 from mdp import *
 import numpy as np
 
@@ -10,8 +6,16 @@ def run_tests():
 
 def test_policy_iteration_aima_mdp():
 	mdp = get_aima_mdp()
-	value = mdp.policy_iteration()[1]
-	print value
+	policy, value = mdp.policy_iteration()
+	correct_value = np.array([0.812, 0.868, 0.918, 1.0, 0.762, 0.660, -1.0, 0.705, 0.655, 0.611, 0.388, 0, 0, 0])
+	np.testing.assert_array_almost_equal(value, correct_value, decimal=2)
+	correct_policy = np.array([3, 3, 3, 1, 0, 0, 1, 0, 2, 2, 2, 1, 1, 1], dtype=np.uint32)
+	np.testing.assert_array_almost_equal(value, correct_value, decimal=2)
+	#ensure the mandatory components are equal, ignore states 3, 6, 11, 12, and 13
+	np.testing.assert_array_equal(correct_policy[0:3], policy[0:3])
+	np.testing.assert_array_equal(correct_policy[4:6], policy[4:6])
+	np.testing.assert_array_equal(correct_policy[7:11], policy[7:11])
+
 '''
 This MDP is taken from the AIMA book (Russell and Norvig),
 pg. 646, Figure 17.1 
