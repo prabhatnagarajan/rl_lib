@@ -42,7 +42,6 @@ class MDP:
 	   Deterministic policy iteration
 	'''
 	def policy_iteration(self, policy=None):
-		print "Enter Policy Iteration"
 		#initialization
 		if policy is None:
 			policy = self.get_random_policy()
