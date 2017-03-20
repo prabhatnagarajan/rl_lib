@@ -2,14 +2,14 @@
 import numpy as np
 from pdb import set_trace
 class MDP:
-	def __init__(self, transitions, rewards, gamma, start=None, terminal=None, min_value=-1000):
+	def __init__(self, transitions, rewards, gamma, start=None, terminal=None, max_value=1000):
 		self.transitions = transitions
 		num_actions = np.shape(transitions)[1]
 		self.rewards = rewards
 		self.gamma = gamma
 		self.states = range(np.shape(self.transitions)[0])
 		self.actions = range(np.shape(self.transitions)[1])
-		self.min_value = min_value
+		self.max_value = max_value
 		self.start = start
 		self.terminal = len(self.states) - 1
 		self.check_valid_mdp()
@@ -76,7 +76,6 @@ class MDP:
 	'''
 	def policy_evaluation(self, policy, theta=0.0001):
 		V = np.zeros(len(self.states))
-		delta = 1
 		count = 0
 		while True:
 			delta = 0
@@ -85,7 +84,9 @@ class MDP:
 				V[state] = np.dot(self.transitions[state, policy[state],:], self.rewards + self.gamma * V)
 				delta = max(delta, np.abs(value - V[state]))
 				#If divergence and policy has value -inf, return value function early
-				if V[state] < self.min_value:
+				if V[state] > self.max_value:
+					return V
+				if V[state] < -self.max_value:
 					return V
 			if delta < theta:
 				break
