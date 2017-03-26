@@ -14,7 +14,7 @@ class ModelEstimator:
 
 	def add_reward(self, state, reward):
 		count = self.reward_counts[state]
-		self.rewards[state] = self.rewards[state] * (count/(count +_ 1)) + (1/(count + 1)) * reward
+		self.rewards[state] = self.rewards[state] * (count/(count + 1)) + (1/(count + 1)) * reward
 		self.reward_counts[state] = count + 1
 
 	def set_transition_distribution(self):
@@ -22,9 +22,9 @@ class ModelEstimator:
 			for action in range(np.shape(self.transition_counts)[1]):
 				total = np.sum(self.transition_counts[state, action,:])
 				if total == 0:
-					for next_state in range(np.shape(self.transitions_counts)[2]):
+					for next_state in range(np.shape(self.transition_counts)[2]):
 						#If no data assume uniform transitions
-						self.transitions[state, action, next_state] = 1/np.shape(self.transitions_counts)[2]
+						self.transitions[state, action, next_state] = 1/np.shape(self.transition_counts)[2]
 				else:
 					for next_state in range(np.shape(self.transitions_counts)[2]):
 						self.transitions[state, action, next_state] = self.transition_counts[state, action, next_state]/total
