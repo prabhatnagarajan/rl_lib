@@ -24,7 +24,7 @@ class ModelEstimator:
 				if total == 0:
 					for next_state in range(np.shape(self.transition_counts)[2]):
 						#If no data assume uniform transitions
-						self.transitions[state, action, next_state] = 1/np.shape(self.transition_counts)[2]
+						self.transitions[state, action, next_state] = float(1)/float(np.shape(self.transition_counts)[2])
 				else:
 					for next_state in range(np.shape(self.transition_counts)[2]):
 						self.transitions[state, action, next_state] = self.transition_counts[state, action, next_state]/total
