@@ -31,8 +31,7 @@ class MDP:
 					if prob < 0 or prob > 1:
 						is_valid = False
 					prob_sum += prob
-				if not (prob_sum == 1):
-					is_valid = False
+				np.testing.assert_almost_equal(1.0, prob_sum)
 		if self.gamma < 0 or self.gamma > 1:
 			is_valid = False
 		assert(is_valid)

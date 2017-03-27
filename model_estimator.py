@@ -1,5 +1,6 @@
 import numpy as np
 from mdp import *
+from sklearn.preprocessing import normalize
 
 class ModelEstimator:
 
@@ -7,7 +8,7 @@ class ModelEstimator:
 		self.rewards = np.zeros(num_states)
 		self.reward_counts = np.zeros(num_states)
 		self.transitions = np.zeros((num_states, num_actions, num_states))
-		self.transition_counts = np.zeros((num_states, num_actions, num_states))
+		self.transition_counts = np.full((num_states, num_actions, num_states), 1.0)
 
 	def add_transition(self, state, action, next_state):
 		self.transition_counts[state, action, next_state] = self.transition_counts[state, action, next_state] + 1
@@ -18,17 +19,11 @@ class ModelEstimator:
 		self.reward_counts[state] = count + 1
 
 	def set_transition_distribution(self):
+		num_states = np.shape(self.transitions)[0]
 		for state in range(np.shape(self.transition_counts)[0]):
 			for action in range(np.shape(self.transition_counts)[1]):
 				total = np.sum(self.transition_counts[state, action,:])
-				if total == 0:
-					for next_state in range(np.shape(self.transition_counts)[2]):
-						#If no data assume uniform transitions
-						self.transitions[state, action, next_state] = float(1)/float(np.shape(self.transition_counts)[2])
-				else:
-					for next_state in range(np.shape(self.transition_counts)[2]):
-						self.transitions[state, action, next_state] = self.transition_counts[state, action, next_state]/total
-
+				self.transitions[state, action, :] = self.transition_counts[state, action, :]/np.sum(self.transition_counts[state, action,:])
 	def get_model(self):
 		self.set_transition_distribution()
 		return (self.transitions, self.rewards)
